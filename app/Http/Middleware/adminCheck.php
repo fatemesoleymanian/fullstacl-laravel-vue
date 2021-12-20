@@ -19,7 +19,7 @@ class adminCheck
     {
         if ($request->path() == 'app/admin_login')  return $next($request);
         $user = Auth::user();
-        if (!Auth::check() || $user->userType == 'User') return response()->json([
+        if (!Auth::check() || $user->role->isAdmin == 0) return response()->json([
             'msg'=>'u cannot access this route mf...',
         ],403);
 //            return redirect('/login');

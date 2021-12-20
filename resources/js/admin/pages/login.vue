@@ -41,7 +41,7 @@ export default {
                     if(res.status === 200)
                     {
                         this.s(res.data.msg)
-                        window.location = '/';
+                        window.location = '/home';
                     }
                     else if(res.status === 422)
                     {

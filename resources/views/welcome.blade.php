@@ -20,7 +20,7 @@
 
         <header id=appHeader class=app-header>
             @if(Auth::check())
-            <app-header :user="{{Auth::user()}}"></app-header>
+            <app-header :user="{{Auth::user()}}" :permission="{{Auth::user()->role->permission}}"></app-header>
             @else
             <app-header :user="false"></app-header>
             @endif

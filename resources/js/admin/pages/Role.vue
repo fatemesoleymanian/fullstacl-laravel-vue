@@ -6,7 +6,7 @@
                 <div class="_1adminOverveiw_table_recent _box_shadow _border_radious _mar_b30 _p20">
                     <div style="display: flex;flex-direction: row;justify-content: space-between">
                         <div> <p class="_title0">Roles</p></div>
-                        <div><Button icon="ios-add" @click="addModal=true">Add role</Button></div>
+                        <div><Button icon="ios-add" @click="addModal=true" v-if="isWritePermitted">Add role</Button></div>
                     </div>
 
                     <div class="_overflow _table_div">
@@ -27,8 +27,8 @@
                                 <td class="_table_name2">{{role.roleName}}</td>
                                 <td>{{ role.created_at }}</td>
                                 <td>
-                                    <Button type="default" shape="circle" icon="md-trash" @click="showDeleteModal(role,i)" :loading="role.isDeleting"></Button>
-                                    <Button type="primary" shape="circle" icon="md-create" @click="showEditModal(role,i)"></Button>
+                                    <Button type="default" shape="circle" icon="md-trash" @click="showDeleteModal(role,i)" :loading="role.isDeleting" v-if="isDeletePermitted"></Button>
+                                    <Button type="primary" shape="circle" icon="md-create" @click="showEditModal(role,i)" v-if="isUpdatePermitted"></Button>
                                 </td>
                             </tr>
 
@@ -43,7 +43,7 @@
                     <Input v-model="data.roleName" placeholder="Role..."  />
                     <div slot="footer">
                         <Button type="default" @click="addModal=false">Close</Button>
-                        <Button type="info" @click="addRole" :disabled="isAdding" :loading="isAdding">
+                        <Button type="info" @click="addRole" :disabled="isAdding" :loading="isAdding" v-if="isWritePermitted">
                             {{isAdding ? 'Adding...' : 'Add role'}}
                         </Button>
                     </div>
@@ -57,7 +57,7 @@
                     <Input v-model="editData.roleName" placeholder="Edit role name..."  />
                     <div slot="footer">
                         <Button type="default" @click="editModal=false">Close</Button>
-                        <Button type="info" @click="editRole" :disabled="isAdding" :loading="isAdding">
+                        <Button type="info" @click="editRole" :disabled="isAdding" :loading="isAdding" v-if="isUpdatePermitted">
                             {{isAdding ? 'Editing' : 'Edit role'}}
                         </Button>
                     </div>

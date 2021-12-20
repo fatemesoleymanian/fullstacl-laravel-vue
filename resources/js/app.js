@@ -11,15 +11,18 @@ import VueAxios from 'vue-axios'
 import { routes } from './routes';
 import ViewUI from 'view-design';
 import 'view-design/dist/styles/iview.css';
-import common from './common'
+import common from './common';
+import converter from './jsonToHtml';
 import store from "./store";
+import Editor from "vue-editor-js/src";
 Vue.prototype.$store = store;
 Vue.use(VueRouter)
 Vue.use(Vuex)
 Vue.use(VueAxios, axios)
 Vue.use(ViewUI)
+Vue.use(Editor)
 Vue.mixin(common)
-
+Vue.mixin(converter)
 //Register Routes
 export const router = new VueRouter({
     base: '/',
@@ -37,6 +40,7 @@ export const router = new VueRouter({
 
 Vue.component('app-header', require('./components/HeaderComponent.vue').default);
 // Vue.component('app-footer', require('./components/FooterComponent.vue').default);
+
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

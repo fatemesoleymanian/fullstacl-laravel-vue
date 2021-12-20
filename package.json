@@ -10,25 +10,33 @@
         "production": "mix --production"
     },
     "devDependencies": {
+        "@editorjs/personality": "^2.0.2",
         "axios": "^0.21.4",
-        "bootstrap": "^4.6.0",
+        "bootstrap": "^4.6.1",
         "jquery": "^3.6",
-        "laravel-mix": "^6.0.6",
+        "laravel-mix": "^6.0.39",
         "lodash": "^4.17.19",
         "popper.js": "^1.16.1",
-        "postcss": "^8.1.14",
+        "postcss": "^8.4.5",
         "resolve-url-loader": "^3.1.2",
-        "sass": "^1.32.11",
+        "sass": "^1.45.0",
         "sass-loader": "^11.0.1",
         "vue": "^2.6.14",
-        "vue-axios": "^3.3.7",
+        "vue-axios": "^3.4.0",
         "vue-loader": "^15.9.8",
-        "vue-router": "^3.5.2",
+        "vue-router": "^3.5.3",
         "vue-template-compiler": "^2.6.14",
         "vuex": "^3.6.2"
     },
     "dependencies": {
-        "@heroicons/vue": "^1.0.4",
-        "view-design": "^4.7.0-beta.10"
+        "@editorjs/editorjs": "^2.22.2",
+        "@editorjs/header": "^2.6.2",
+        "@editorjs/image": "^2.6.2",
+        "@editorjs/list": "^1.6.2",
+        "@editorjs/paragraph": "^2.8.0",
+        "@editorjs/table": "^2.0.1",
+        "@heroicons/vue": "^1.0.5",
+        "view-design": "^4.7.0",
+        "vue-editor-js": "^2.0.2"
     }
 }

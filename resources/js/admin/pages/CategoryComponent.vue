@@ -6,7 +6,11 @@
                 <div class="_1adminOverveiw_table_recent _box_shadow _border_radious _mar_b30 _p20">
                     <div style="display: flex;flex-direction: row;justify-content: space-between">
                         <div> <p class="_title0">Categories</p></div>
-                        <div><Button icon="ios-add" @click="addModal=true">Add category</Button></div>
+                        <div>
+                            <Button icon="ios-add" @click="addModal=true" v-if="isWritePermitted">
+                                Add category
+                            </Button>
+                        </div>
                     </div>
 
                     <div class="_overflow _table_div">
@@ -32,8 +36,8 @@
                                 <td class="_table_name2">{{category.categoryName}}</td>
                                 <td>{{ category.created_at }}</td>
                                 <td>
-                                    <Button type="default" shape="circle" icon="md-trash" @click="showDeleteModal(category,i)" :loading="category.isDeleting"></Button>
-                                    <Button type="primary" shape="circle" icon="md-create" @click="showEditModal(category,i)"></Button>
+                                    <Button type="default" shape="circle" icon="md-trash" @click="showDeleteModal(category,i)" :loading="category.isDeleting" v-if="isDeletePermitted"></Button>
+                                    <Button type="primary" shape="circle" icon="md-create" @click="showEditModal(category,i)" v-if="isUpdatePermitted"></Button>
                                 </td>
                             </tr>
 
@@ -73,7 +77,7 @@
 
                     <div slot="footer">
                         <Button type="default" @click="closeAddModal">Close</Button>
-                        <Button type="primary" @click="addCategory" :disabled="isAdding" :loading="isAdding">
+                        <Button type="primary" @click="addCategory" :disabled="isAdding" :loading="isAdding" v-if="isWritePermitted">
                             {{isAdding ? 'Adding...' : 'Add category'}}
                         </Button>
                     </div>
@@ -112,7 +116,7 @@
 
                     <div slot="footer">
                         <Button type="default" @click="closeEditModal">Close</Button>
-                        <Button type="info" @click="editCategory" :disabled="isAdding" :loading="isAdding">
+                        <Button type="info" @click="editCategory" :disabled="isAdding" :loading="isAdding" v-if="isUpdatePermitted">
                             {{isAdding ? 'Editing' : 'Edit category'}}
                         </Button>
                     </div>

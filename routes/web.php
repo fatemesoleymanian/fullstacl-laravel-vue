@@ -37,8 +37,9 @@ Route::prefix('app')->middleware(\App\Http\Middleware\adminCheck::class)->group(
     Route::post('/edit_role',[\App\Http\Controllers\AdminController::class , 'editRole']);
     Route::post('/delete_role',[\App\Http\Controllers\AdminController::class , 'deleteRole']);
     Route::get('/get_roles',[\App\Http\Controllers\AdminController::class , 'getRoles']);
+    Route::post('/assign_role',[\App\Http\Controllers\AdminController::class , 'assignRoles']);
 });
-
+Route::post('/createblog',[\App\Http\Controllers\BlogController::class , 'upload']);
 
 Route::get('/logout',[\App\Http\Controllers\AdminController::class , 'logout']);
 Route::get('/{any?}',[\App\Http\Controllers\AdminController::class , 'index']);

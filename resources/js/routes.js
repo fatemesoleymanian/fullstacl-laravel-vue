@@ -4,28 +4,35 @@ import Category from "./admin/pages/CategoryComponent";
 import AdminUsers from "./admin/pages/AdminUsers";
 import login from "./admin/pages/login";
 import role from "./admin/pages/Role";
+import assignRole from "./admin/pages/AssignRole";
+import createBlog from "./admin/pages/CreateBlog";
 import usecomp from "./vuex/usecomp";
 
 export const routes = [
     {
-        path: '/',
-        component: App
+        path: '/home',
+        component: App,
+        name:'home'
     },
     {
-        path: '/home',
-        component: App
+        path: '/dashboard',
+        component: App,
+        name:'dashboard'
     },
     {
         path:'/tags',
-        component: Tags
+        component: Tags,
+        name:'tags'
     },
     {
         path:'/category',
-        component: Category
+        component: Category,
+        name:'category'
     },
     {
         path:'/admin',
-        component: AdminUsers
+        component: AdminUsers,
+        name:'admin'
     },
     {
         path:'/test',
@@ -33,11 +40,23 @@ export const routes = [
     },
     {
         path:'/login',
-        component: login
+        component: login,
+        name:'login'
     },
     {
         path:'/role',
-        component: role
+        component: role,
+        name:'role'
+    },
+    {
+        path:'/assignrole',
+        component: assignRole,
+        name:'assignRole'
+    },
+    {
+        path:'/createblog',
+        component: createBlog,
+        name:'createblog'
     },
 
 ];

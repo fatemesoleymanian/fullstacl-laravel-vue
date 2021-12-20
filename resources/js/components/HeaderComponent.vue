@@ -13,46 +13,19 @@
                 <div class="_1side_menu_content">
                     <div class="_1side_menu_img_name">
                         <!-- <img class="_1side_menu_img" src="/pic.png" alt="" title=""> -->
-                        <p class="_1side_menu_name">Admin</p>
+                        <p class="_1side_menu_name">{{name}} panel</p>
                     </div>
 
                     <!--~~~ MENU LIST ~~~~~~-->
                     <div class="_1side_menu_list">
                         <ul class="_1side_menu_list_ul">
-                            <li>
-                                <router-link to="/">
-                                    <Icon type="ios-speedometer" />
-                                    Dashboard</router-link>
+                            <li v-for="(menuItem, i) in permission" :key="i" v-if="permission.length && menuItem.read">
+                                <router-link :to="'/'+menuItem.name">
+                                    <Icon :type="menuItem.icon" />
+                                    {{menuItem.resourceName}}
+                                </router-link>
                             </li>
 
-
-                            <!-- <li><router-link to="tags"><Icon type="ios-speedometer" /> Tags</router-link></li>
-                            <li><router-link to="category"><Icon type="ios-speedometer" /> Category</router-link></li>
-                            <li><router-link to="adminusers"><Icon type="ios-speedometer" /> Admin users</router-link></li>
-                            <li><router-link to="role"><Icon type="ios-speedometer" /> Role Management</router-link></li>
-                            <li><router-link to="assignRole"><Icon type="ios-speedometer" /> Assign role</router-link></li> -->
-
-
-                            <li>
-                                <router-link to="/tags">
-                                <Icon type="md-pricetags" />
-                                Tags</router-link>
-                            </li>
-                            <li>
-                                <router-link to="/category">
-                                    <Icon type="md-filing" />
-                                    Categories</router-link>
-                            </li>
-                            <li>
-                                <router-link to="/admin">
-                                    <Icon type="ios-contact" />
-                                    Admin Users</router-link>
-                            </li>
-                            <li>
-                                <router-link to="/role">
-                                    <Icon type="md-hand" />
-                                    Role Managment</router-link>
-                            </li>
                             <li>
                                 <a href="/logout">
                                     <Icon type="md-exit" /> Logout
@@ -86,14 +59,17 @@
 </template>
 <script>
 export default {
-    props:['user'],
+    props:['user','permission'],
     data(){
         return{
-
+            name:''
         }
     },
     created(){
-        this.$store.commit('updateUser',this.user);
+        this.$store.commit('setUpdateUser',this.user);
+        this.name=this.user.fullName;
+        // console.log(this.user)
+        this.$store.commit('setUserPermission',this.permission);
     }
 }
 </script>

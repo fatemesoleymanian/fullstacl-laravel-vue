@@ -6,7 +6,7 @@
                 <div class="_1adminOverveiw_table_recent _box_shadow _border_radious _mar_b30 _p20">
                     <div style="display: flex;flex-direction: row;justify-content: space-between">
                         <div> <p class="_title0">Tags</p></div>
-                        <div><Button icon="ios-add" @click="addModal=true">Add tag</Button></div>
+                        <div><Button icon="ios-add" @click="addModal=true" v-if="isWritePermitted">Add tag</Button></div>
                     </div>
 
                     <div class="_overflow _table_div">
@@ -27,8 +27,8 @@
                                 <td class="_table_name2">{{tag.tagName}}</td>
                                 <td>{{ tag.created_at }}</td>
                                 <td>
-                                    <Button type="default" shape="circle" icon="md-trash" @click="showDeleteModal(tag,i)" :loading="tag.isDeleting"></Button>
-                                    <Button type="primary" shape="circle" icon="md-create" @click="showEditModal(tag,i)"></Button>
+                                    <Button type="default" shape="circle" icon="md-trash" @click="showDeleteModal(tag,i)" :loading="tag.isDeleting" v-if="isDeletePermitted"></Button>
+                                    <Button type="primary" shape="circle" icon="md-create" @click="showEditModal(tag,i)" v-if="isUpdatePermitted"></Button>
                                 </td>
                             </tr>
 
@@ -43,7 +43,7 @@
                     <Input v-model="data.tagName" placeholder="Enter a name..."  />
                     <div slot="footer">
                         <Button type="default" @click="addModal=false">Close</Button>
-                        <Button type="info" @click="addTag" :disabled="isAdding" :loading="isAdding">
+                        <Button type="info" @click="addTag" :disabled="isAdding" :loading="isAdding" v-if="isWritePermitted">
                             {{isAdding ? 'Adding...' : 'Add tag'}}
                         </Button>
                     </div>
@@ -57,7 +57,7 @@
                     <Input v-model="editData.tagName" placeholder="Edit tag name..."  />
                     <div slot="footer">
                         <Button type="default" @click="editModal=false">Close</Button>
-                        <Button type="info" @click="editTag" :disabled="isAdding" :loading="isAdding">
+                        <Button type="info" @click="editTag" :disabled="isAdding" :loading="isAdding" v-if="isUpdatePermitted">
                             {{isAdding ? 'Editing' : 'Edit tag'}}
                         </Button>
                     </div>
@@ -93,7 +93,7 @@ export default {
                     this.tags.splice(obj.deletingIndex,1);
                     console.log(obj.deletingIndex);
                 }
-            }
+            },
         },
     data(){
         return{
@@ -201,12 +201,17 @@ export default {
 
     },
     async created(){
-        const res = await this.callApi('get','app/get_tags')
-        if(res.status === 200){
+        //for extra control
+
+        if(this.isReadPermitted) {
+        const res = await this.callApi('get', 'app/get_tags')
+
+        if (res.status === 200) {
             this.tags = res.data
-        }else {
+        } else {
             this.swr()
         }
+    }
     }
 }
 </script>

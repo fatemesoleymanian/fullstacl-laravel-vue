@@ -7,7 +7,7 @@
                     <div style="display: flex;flex-direction: row;justify-content: space-between">
                         <div><p class="_title0">Admins</p></div>
                         <div>
-                            <Button icon="ios-add" @click="addModal=true">Add admin</Button>
+                            <Button icon="ios-add" @click="addModal=true" v-if="isWritePermitted">Add admin</Button>
                         </div>
                     </div>
 
@@ -30,13 +30,16 @@
                                 <td>{{ user.id }}</td>
                                 <td class="_table_name2">{{ user.fullName }}</td>
                                 <td>{{ user.email }}</td>
-                                <td>{{ user.userType }}</td>
+                                <td>{{ user.role_id }}</td>
                                 <td>{{ user.created_at }}</td>
                                 <td>
                                     <Button type="default" shape="circle" icon="md-trash"
-                                            @click="showDeleteModal(user,i)" :loading="user.isDeleting"></Button>
+                                            @click="showDeleteModal(user,i)"
+                                            :loading="user.isDeleting"
+                                            v-if="isDeletePermitted"></Button>
                                     <Button type="primary" shape="circle" icon="md-create"
-                                            @click="showEditModal(user,i)"></Button>
+                                            @click="showEditModal(user,i)"
+                                            v-if="isUpdatePermitted"></Button>
                                 </td>
                             </tr>
 
@@ -58,14 +61,17 @@
                         <Input type="password" v-model="data.password" placeholder="Password:"/>
                     </div>
                     <div class="space">
-                        <Select v-model="data.userType" placeholder="Select User Type:">
-                            <Option value="Admin">Admin</Option>
-                            <Option value="Editor">Editor</Option>
+                        <Select v-model="data.role_id" placeholder="Select User Type:">
+                            <Option :value="r.id" v-for="(r,i) in roles"  :key="i" v-if="roles.length">
+                                {{r.roleName}}
+                            </Option>
                         </Select>
                     </div>
                     <div slot="footer">
                         <Button type="default" @click="addModal=false">Close</Button>
-                        <Button type="info" @click="addAdmin" :disabled="isAdding" :loading="isAdding">
+                        <Button type="info" @click="addAdmin" :disabled="isAdding"
+                                :loading="isAdding"
+                                v-if="isWritePermitted">
                             {{ isAdding ? 'Adding...' : 'Add admin' }}
                         </Button>
                     </div>
@@ -86,14 +92,17 @@
                         <Input type="password" v-model="editData.password" placeholder="Password:"/>
                     </div>
                     <div class="space">
-                        <Select v-model="editData.userType" placeholder="Select User Type:">
-                            <Option value="Admin">Admin</Option>
-                            <Option value="Editor">Editor</Option>
+                        <Select v-model="editData.role_id" placeholder="Select User Type:">
+                            <Option :value="r.id" v-for="(r,i) in roles"  :key="i" v-if="roles.length">
+                                {{r.roleName}}
+                            </Option>
                         </Select>
                     </div>
                     <div slot="footer">
                         <Button type="default" @click="editModal=false">Close</Button>
-                        <Button type="info" @click="editAdmin" :disabled="isAdding" :loading="isAdding">
+                        <Button type="info" @click="editAdmin" :disabled="isAdding"
+                                :loading="isAdding"
+                                v-if="isUpdatePermitted">
                             {{ isAdding ? 'Editing' : 'Edit tag' }}
                         </Button>
                     </div>
@@ -136,7 +145,7 @@ export default {
                 fullName: '',
                 email: '',
                 password: '',
-                userType: 'Admin',
+                role_id:null
             },
             addModal: false,
             editModal: false,
@@ -147,20 +156,21 @@ export default {
                 fullName: '',
                 email: '',
                 password: '',
-                userType: '',
+                role_id:''
             },
             index: -1,
-            deleteItem: {}
+            deleteItem: {},
+            roles:{}
         }
     },
     methods: {
 
         async addAdmin() {
-
+            console.log(this.data.role_id);
             if (this.data.fullName.trim() == '') return this.error(true, 'Full name');
             if (this.data.email.trim() == '') return this.error(true, 'Email');
             if (this.data.password.trim() == '') return this.error(true, 'Password');
-            if (this.data.userType.trim() == '') return this.error(true, 'User type');
+            if (!this.data.role_id) return this.error(true, 'User type');
             this.isAdding = true
             const res = await this.callApi('post', 'app/create_useradmin', this.data);
             if (res.status === 201) {
@@ -189,7 +199,7 @@ export default {
                 fullName:user.fullName,
                 email:user.email,
                 id:user.id,
-                userType:user.userType
+                role_id:user.role_id
             }
             this.editData = obj
             this.editModal = true
@@ -198,7 +208,7 @@ export default {
         async editAdmin() {
             if (this.editData.fullName.trim() == '') return this.error(true, 'User name')
             if (this.editData.email.trim() == '') return this.error(true, 'Email')
-            if (this.editData.userType.trim() == '') return this.error(true, 'User type')
+            if (!this.editData.role_id) return this.error(true, 'User type')
             this.isAdding = true
             const res = await this.callApi('post', 'app/edit_useradmin', this.editData);
             if (res.status === 200) {
@@ -248,9 +258,18 @@ export default {
 
     },
     async created() {
-        const res = await this.callApi('get', 'app/get_useradmin')
+        //make them get req together
+        const[res,resRole] = await Promise.all([
+            this.callApi('get', 'app/get_useradmin'),
+            this.callApi('get', 'app/get_roles')
+        ])
         if (res.status === 200) {
             this.users = res.data
+        } else {
+            this.swr()
+        }
+        if (resRole.status === 200) {
+            this.roles = resRole.data
         } else {
             this.swr()
         }
