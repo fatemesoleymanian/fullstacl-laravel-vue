@@ -8,7 +8,7 @@
                 <span>Delete confirmation</span>
             </p>
             <div style="text-align:center">
-                <p>Are you sure to delete this tag?</p>
+                <p>{{this.getDeleteModalObj.msg}}</p>
 
             </div>
             <div slot="footer">
@@ -35,7 +35,8 @@ export default {
                 if (res.status === 200)
                 {
                     this.$store.commit('setDeleteModal',true);
-                    this.s('This tag has been deleted successfully!');
+                    this.s(this.getDeleteModalObj.successMsg);
+                    // console.log(this.getDeleteModalObj.successMsg)
                     // this.isDeleting=false
                     // this.deleteModal=false
                 }

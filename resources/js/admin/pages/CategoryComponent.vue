@@ -258,10 +258,13 @@ export default {
                 dataUrl : 'app/delete_category',
                 data : category,
                 deletingIndex:i,
-                isDeleted : false
+                isDeleted : false,
+                msg : 'Are you sure you want to delete this category?',
+                successMsg: 'Category has been deleted successfully!'
             }
             this.$store.commit('setDeleteModalObj',deleteModalObj);
             console.log("show dlete modal"+deleteModalObj.deletingIndex)
+
         },
         handleSuccess (res, file) {
             console.log('handle enter')
@@ -337,6 +340,7 @@ export default {
         }
     },
     async created(){
+        this.getDeleteModalObj.deleteModal=false
         this.token =  window.Laravel.csrfToken
         const res = await this.callApi('get','app/get_categories')
         if(res.status === 200){

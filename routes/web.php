@@ -38,8 +38,15 @@ Route::prefix('app')->middleware(\App\Http\Middleware\adminCheck::class)->group(
     Route::post('/delete_role',[\App\Http\Controllers\AdminController::class , 'deleteRole']);
     Route::get('/get_roles',[\App\Http\Controllers\AdminController::class , 'getRoles']);
     Route::post('/assign_role',[\App\Http\Controllers\AdminController::class , 'assignRoles']);
+    //blog
+    Route::post('/create-blog',[\App\Http\Controllers\BlogController::class , 'createBlog']);
+    Route::get('/get_blogs',[\App\Http\Controllers\BlogController::class , 'getBlogs']);
+    Route::get('/blog_single/{id}',[\App\Http\Controllers\BlogController::class , 'getSingleBlog']);
+    Route::post('/delete_blog',[\App\Http\Controllers\BlogController::class , 'deleteBlogs']);
+    Route::post('/update_blog/{id}',[\App\Http\Controllers\BlogController::class , 'updateBlog']);
 });
 Route::post('/createblog',[\App\Http\Controllers\BlogController::class , 'upload']);
+Route::get('/slug',[\App\Http\Controllers\BlogController::class , 'slug']);
 
 Route::get('/logout',[\App\Http\Controllers\AdminController::class , 'logout']);
 Route::get('/{any?}',[\App\Http\Controllers\AdminController::class , 'index']);

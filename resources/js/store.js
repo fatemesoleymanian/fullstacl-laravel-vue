@@ -10,7 +10,9 @@ export default new Vuex.Store({
                 dataUrl : '',
                 data : null,
                 deletingIndex:null,
-                isDeleted : false
+                isDeleted : false,
+                msg : '',
+                successMsg: ''
             },
         user:false,
         userPermission:null
@@ -49,7 +51,9 @@ export default new Vuex.Store({
                     dataUrl : '',
                     data : null,
                     deletingIndex:state.deleteModalObj.deletingIndex,
-                    isDeleted : data
+                    isDeleted : data,
+                    msg : state.deleteModalObj.msg,
+                    successMsg:state.deleteModalObj.successMsg
                 }
             state.deleteModalObj = deleteModalObj;
             console.log(deleteModalObj);

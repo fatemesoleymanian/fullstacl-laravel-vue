@@ -10,8 +10,6 @@
                         <div class="_input_field">
                             <Input type="text" v-model="data.title" placeholder="Title" />
                         </div>
-
-
                     <div class="_overflow _table_div blog_editor">
                         <editor
                             ref="editor"
@@ -31,22 +29,34 @@
                                 }"
                         />
                     </div>
-                    <Button @click="save" type="primary">
-                    Save Data
-                </Button>
+                    <div class="_input_field">
+                        <Input  type="textarea" v-model="data.post_excerpt" :rows="4" placeholder="Post excerpt " />
+                    </div>
+                    <div class="_input_field">
+                        <Select  filterable multiple placeholder="Select category" v-model="data.category_id">
+                            <Option v-for="(c, i) in category" :value="c.id" :key="i">{{ c.categoryName }}</Option>
+                        </Select>
+                    </div>
+                    <div class="_input_field">
+                        <Select  filterable multiple placeholder="Select tag" v-model="data.tag_id">
+                            <Option v-for="(t, i) in tag" :value="t.id" :key="i">{{ t.tagName }}</Option>
+                        </Select>
+                    </div>
+                    <div class="_input_field">
+                        <Input  type="textarea" v-model="data.metaDescription" :rows="4" placeholder="Meta description" />
+                    </div>
+                    <div class="_input_field">
+                        <Button type="info" v-if="isWritePermitted" @click="save" :loading="isCreating" :disabled="isCreating">{{isCreating ? 'Please wait...' : 'Create blog'}}</Button>
+                    </div>
                 </div>
 
             </div>
         </div>
     </div>
 </template>
-
 <script>
-
 export default {
-
     name:'CreateBlog',
-
     data() {
         return {
             initData: null,
@@ -71,12 +81,42 @@ export default {
             this.$refs.editor._data.state.editor.save()
                 .then(async (data) => {
                     await this.outputHtml(data.blocks);
-                    // console.log(this.articleHTML)  it's only show the content of articleHtml in here(then()
+                    //  it's only show the content of articleHtml in here(then()
+                    this.data.post = this.articleHTML
+                    this.data.jsonData = JSON.stringify(data);
+                    if(this.data.post.trim()=='') return this.error(true,'Post')
+                    if(this.data.title.trim()=='') return this.error(true,'Title')
+                    if(this.data.post_excerpt.trim()=='') return this.error(true,'Post excerpt')
+                    if(this.data.metaDescription.trim()=='') return this.error(true,'Meta description')
+                    if(!this.data.tag_id.length) return this.error(true,'Tag')
+                    if(!this.data.category_id.length) return this.error(true,'Category')
+                    const res = await this.callApi('post', 'app/create-blog', this.data)
+                    if(res.status===200){
+                        this.s('Blog has been created successfully!')
+                        // redirect...
+                        this.$router.push('/blogs')
+                    }
+                    else{
+                        if(res.status==422){
+                            for(let i in res.data.errors){
+                                this.error(true,res.data.errors[i][0])
+                            }
+
+                        }
+                        if(res.status==401){
+                                this.error(true,res.data.errors)
+                            }
+                        else{
+                            this.swr()
+                        }
+                    }
                 })
                 .catch(err => { console.log(err) })
 
+            this.isCreating = false
         },
        save(){
+           console.log(this.initData)
           this.onSave();
         },
         outputHtml(articleObj){
@@ -127,6 +167,21 @@ export default {
             });
         },
     },
+    async created()
+    {
+        const [cat,tag] = await  Promise.all(
+            [
+                this.callApi('get', 'app/get_categories'),
+                this.callApi('get', 'app/get_tags'),
+            ]
+        );
+        if(cat.status==200){
+            this.category = cat.data
+            this.tag = tag.data
+        }else{
+            this.swr()
+        }
+    }
 }
 </script>
 <style scoped>

@@ -250,15 +250,19 @@ export default {
                     dataUrl: 'app/delete_useradmin',
                     data: user,
                     deletingIndex: i,
-                    isDeleted: false
+                    isDeleted: false,
+                    msg : 'Are you sure you want to delete this user?',
+                    successMsg: 'user has been deleted successfully!'
                 }
             this.$store.commit('setDeleteModalObj', deleteModalObj);
             // console.log(deleteModalObj.deletingIndex);
+
         },
 
     },
     async created() {
         //make them get req together
+        this.getDeleteModalObj.deleteModal=false
         const[res,resRole] = await Promise.all([
             this.callApi('get', 'app/get_useradmin'),
             this.callApi('get', 'app/get_roles')

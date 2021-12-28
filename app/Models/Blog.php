@@ -5,7 +5,26 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+
 class Blog extends Model
 {
     use HasFactory;
+    protected $fillable = ['title', 'post', 'post_excerpt', 'slug', 'user_id', 'featuredImage', 'metaDescription', 'views', 'jsonData'];
+    public function sluggable()
+    {
+        return [
+            'slug' => [
+                'source' => 'title'
+            ]
+        ];
+    }
+        //make this is to => this-is
+    public function tag()
+    {
+        return $this->belongsToMany(Tag::class,Blogtag::class);
+    }
+    public function category()
+    {
+        return $this->belongsToMany(Category::class,Blogcategory::class);
+    }
 }

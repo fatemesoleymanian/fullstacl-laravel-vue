@@ -6,6 +6,9 @@ import login from "./admin/pages/login";
 import role from "./admin/pages/Role";
 import assignRole from "./admin/pages/AssignRole";
 import createBlog from "./admin/pages/CreateBlog";
+import editBlog from "./admin/pages/EditBlog";
+import blogs from "./admin/pages/Blogs";
+import notfound from "./admin/pages/notFound";
 import usecomp from "./vuex/usecomp";
 
 export const routes = [
@@ -57,6 +60,22 @@ export const routes = [
         path:'/createblog',
         component: createBlog,
         name:'createblog'
+    },
+    {
+        path:'/blogs',
+        component: blogs,
+        name:'blogs'
+    },
+    {
+        path:'/editblog/:id',
+        component: editBlog,
+        name:'editblog'
+    },
+    {
+        path: '*',
+        component: notfound,
+        name: 'notfound'
+
     },
 
 ];

@@ -194,14 +194,18 @@ export default {
                     dataUrl : 'app/delete_role',
                     data : role,
                     deletingIndex:i,
-                    isDeleted : false
+                    isDeleted : false,
+                    msg : 'Are you sure you want to delete this role?',
+                    successMsg: 'Role has been deleted successfully!'
                 }
             this.$store.commit('setDeleteModalObj',deleteModalObj);
             console.log(deleteModalObj.deletingIndex);
+
         },
 
     },
     async created(){
+        this.getDeleteModalObj.deleteModal=false
         const res = await this.callApi('get','app/get_roles')
         if(res.status === 200){
             this.roles = res.data

@@ -193,14 +193,18 @@ export default {
                     dataUrl : 'app/delete_tag',
                     data : tag,
                     deletingIndex:i,
-                    isDeleted : false
+                    isDeleted : false,
+                    msg : 'Are you sure you want to delete this tag?',
+                    successMsg: 'Tag has been deleted successfully!'
                 }
             this.$store.commit('setDeleteModalObj',deleteModalObj);
             console.log(deleteModalObj.deletingIndex);
+
         },
 
     },
     async created(){
+        this.getDeleteModalObj.deleteModal=false
         //for extra control
 
         if(this.isReadPermitted) {
