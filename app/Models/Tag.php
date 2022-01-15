@@ -9,4 +9,8 @@ class Tag extends Model
 {
     protected $fillable = ['id','tagName'];
     use HasFactory;
+    public function getCreatedAtAttribute($val)
+    {
+        return verta($val)->format('l d %B Y');
+    }
 }

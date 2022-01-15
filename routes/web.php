@@ -44,6 +44,15 @@ Route::prefix('app')->middleware(\App\Http\Middleware\adminCheck::class)->group(
     Route::get('/blog_single/{id}',[\App\Http\Controllers\BlogController::class , 'getSingleBlog']);
     Route::post('/delete_blog',[\App\Http\Controllers\BlogController::class , 'deleteBlogs']);
     Route::post('/update_blog/{id}',[\App\Http\Controllers\BlogController::class , 'updateBlog']);
+
+    //comments
+    Route::get('/get_comments/{id}',[\App\Http\Controllers\CommentsController::class , 'getComment']);
+    Route::post('/change_publish/{id}',[\App\Http\Controllers\CommentsController::class , 'changePublish']);
+    Route::post('/delete_comment',[\App\Http\Controllers\CommentsController::class , 'deleteComment']);
+    //replies
+    Route::get('/get_replies/{id}',[\App\Http\Controllers\RepliesController::class , 'getReply']);
+    Route::post('/change_publish_rep/{id}',[\App\Http\Controllers\RepliesController::class , 'changePublish']);
+    Route::post('/delete_reply',[\App\Http\Controllers\RepliesController::class , 'deleteReply']);
 });
 Route::post('/createblog',[\App\Http\Controllers\BlogController::class , 'upload']);
 Route::get('/slug',[\App\Http\Controllers\BlogController::class , 'slug']);
@@ -57,3 +66,5 @@ Route::get('/{any?}',[\App\Http\Controllers\AdminController::class , 'index']);
 //Route::get('/{any?}', function () {
 //    return view('welcome');
 //});
+
+

@@ -46,4 +46,12 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Role::class);
     }
+    public function replies()
+    {
+        return $this->hasMany(Replies::class);
+    }
+    public function getCreatedAtAttribute($val)
+    {
+        return verta($val)->format('l d %B Y');
+    }
 }

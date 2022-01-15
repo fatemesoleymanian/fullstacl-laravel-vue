@@ -4,7 +4,8 @@
     </IfModule>
 
     RewriteEngine On
-
+    RewriteBase /
+    RewriteRule ^index\.html$ - [L]
     # Handle Authorization Header
     RewriteCond %{HTTP:Authorization} .
     RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
@@ -17,5 +18,7 @@
     # Send Requests To Front Controller...
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-l
+    RewriteRule . /index.html [L]
     RewriteRule ^ index.php [L]
 </IfModule>

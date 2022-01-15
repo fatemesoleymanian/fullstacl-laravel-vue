@@ -18,7 +18,12 @@ class Blog extends Model
             ]
         ];
     }
-        //make this is to => this-is
+    public function getCreatedAtAttribute($val)
+    {
+        return verta($val)->format('l d %B Y');
+    }
+
+    //make this is to => this-is
     public function tag()
     {
         return $this->belongsToMany(Tag::class,Blogtag::class);

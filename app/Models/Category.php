@@ -9,4 +9,8 @@ class Category extends Model
 {
     protected $fillable = ['id','categoryName','IconImage'];
     use HasFactory;
+    public function getCreatedAtAttribute($val)
+    {
+        return verta($val)->format('l d %B Y');
+    }
 }

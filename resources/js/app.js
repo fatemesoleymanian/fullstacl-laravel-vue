@@ -25,12 +25,13 @@ Vue.mixin(common)
 Vue.mixin(converter)
 //Register Routes
 export const router = new VueRouter({
-    base: '/',
+    base: process.env.BASE_URL,
     mode: 'history',
     routes,
     store
 
 });
+
 
 /**
  * The following block of code may be used to automatically register your

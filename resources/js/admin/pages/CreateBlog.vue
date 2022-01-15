@@ -29,6 +29,7 @@
                                 }"
                         />
                     </div>
+
                     <div class="_input_field">
                         <Input  type="textarea" v-model="data.post_excerpt" :rows="4" placeholder="Post excerpt " />
                     </div>
@@ -167,8 +168,8 @@ export default {
             });
         },
     },
-    async created()
-    {
+
+    async mounted() {
         const [cat,tag] = await  Promise.all(
             [
                 this.callApi('get', 'app/get_categories'),
@@ -181,6 +182,14 @@ export default {
         }else{
             this.swr()
         }
+        console.log("created u gota be a ....");
+    },
+    updated(){
+        console.log("updated u gota be a ....");
+    },
+    async created()
+    {
+
     }
 }
 </script>
