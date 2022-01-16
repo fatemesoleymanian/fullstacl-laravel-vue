@@ -58,7 +58,7 @@ Route::post('/createblog',[\App\Http\Controllers\BlogController::class , 'upload
 Route::get('/slug',[\App\Http\Controllers\BlogController::class , 'slug']);
 
 Route::get('/logout',[\App\Http\Controllers\AdminController::class , 'logout']);
-Route::get('/{any?}',[\App\Http\Controllers\AdminController::class , 'index']);
+Route::get('/{any?}',[\App\Http\Controllers\AdminController::class , 'index'])->where('any','[\/\w\.-]*');
 //Route::get('/',[\App\Http\Controllers\AdminController::class , 'index']);
 
 

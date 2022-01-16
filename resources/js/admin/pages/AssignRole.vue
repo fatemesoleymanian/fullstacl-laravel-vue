@@ -9,7 +9,7 @@
                             <div> <p class="_title0">Role Assignment</p></div>
                             <div class="space">
                                 <Select v-model="data.id" placeholder="Select User Type:" @on-change="roleChange">
-                                    <Option :value="r.id" v-for="(r,i) in roles"  :key="i" v-if="roles.length">
+                                    <Option :value="r.id" v-for="(r,i) in roles "  :key="i" v-if="roles.length-1 && i>=user_id">
                                         {{r.roleName}}
                                     </Option>
                                 </Select>
@@ -24,7 +24,7 @@
                                     <th>Read</th>
                                     <th>Write</th>
                                     <th>Update</th>
-                                    <th>Delete</th>
+                                    <th>Delete <Checkbox style="float: right" v-model="selectAll" @on-change="select">Select All</Checkbox></th>
                                 </tr>
                                 <!-- TABLE TITLE -->
 
@@ -32,10 +32,10 @@
                                 <!-- ITEMS -->
                                 <tr v-for="(resource,i) in resources" :key="i" v-if="resources.length">
                                    <td>{{resource.resourceName}}</td>
-                                   <td> <Checkbox v-model="resource.read "></Checkbox></td>
-                                   <td> <Checkbox v-model="resource.write "></Checkbox></td>
-                                   <td> <Checkbox v-model="resource.update "></Checkbox></td>
-                                   <td> <Checkbox v-model="resource.delete "></Checkbox></td>
+                                   <td> <Checkbox v-model=" resource.read "></Checkbox></td>
+                                   <td> <Checkbox v-model=" resource.write "></Checkbox></td>
+                                   <td> <Checkbox v-model=" resource.update "></Checkbox></td>
+                                   <td> <Checkbox v-model=" resource.delete "></Checkbox></td>
                                 </tr>
 
                             </table>
@@ -46,15 +46,6 @@
                         {{ isSubmitting ? 'Submitting...' : 'Submit changes' }}
                     </Button>
                     </div>
-                    <!--ADD Role MODAL-->
-
-                    <!--ADD Role MODAL-->
-                    <!--EDIT Role MODAL-->
-
-                    <!--EDIT Role MODAL-->
-                    <!--DELETE ROLE MODAL-->
-
-                    <!--DELETE ROLE MODAL-->
                 </div>
             </div>
         </div>
@@ -70,18 +61,13 @@
                 {
                     ...mapGetters(['getUser'])
                 },
-            watch:
-                {
-                    getUser(user)
-                    {
-                        this.bb=user
-                    },
-                },
             data(){
 
                 return{
-                    data:{id:null,
-                    bb:''},
+                    data:{
+                        id:null
+                    },
+                    user_id:null,
                     roles:[],
                     resources:[
                         {resourceName:'Home', read:false , write:false , update:false , delete:false , name:'home' , icon:'ios-speedometer'},
@@ -106,7 +92,8 @@
                         {resourceName:'Role', read:false , write:false , update:false , delete:false , name:'role' , icon:'md-hand'},
                         {resourceName:'Assign Role', read:false , write:false , update:false , delete:false , name:'assignRole' , icon:'ios-man'},
                     ],
-                    isSubmitting:false
+                    isSubmitting:false,
+                    selectAll: false
 
                 }
             },
@@ -131,19 +118,39 @@
                     let per = this.roles[this.data.id-1].permission;
                    if(!per) this.resources=this.defaultResourcesPermission
                     else this.resources=JSON.parse(per);
+                    this.selectAll=false
                 },
+                select(){
+                    if (this.selectAll==true) {
+                        for (let i in this.resources) {
+                            this.resources[i].delete = true
+                            this.resources[i].read = true
+                            this.resources[i].write = true
+                            this.resources[i].update = true
+                        }
+                    }
+                    else
+                    {
+                        for (let i in this.resources) {
+                            this.resources[i].delete = false
+                            this.resources[i].read = false
+                            this.resources[i].write = false
+                            this.resources[i].update = false
+                        }
+                    }
+                }
             },
             async created() {
-                console.log(this.bb)
+                this.user_id = this.getUser.role_id
                 const res = await this.callApi('get', 'app/get_roles')
                 if (res.status === 200) {
                     this.roles = res.data
 
                     if (res.data.length) {
-                        // console.log(res.data[id].id)
-                        this.data.id = res.data[0].id
-                        if (res.data[0].permission) {
-                            this.resources = JSON.parse(res.data[0].permission);
+
+                        this.data.id = res.data[this.user_id].id
+                        if (res.data[this.user_id].permission) {
+                            this.resources = JSON.parse(res.data[this.user_id].permission);
                         }
                     }
 

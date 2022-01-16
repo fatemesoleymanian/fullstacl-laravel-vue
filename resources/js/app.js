@@ -14,18 +14,19 @@ import 'view-design/dist/styles/iview.css';
 import common from './common';
 import converter from './jsonToHtml';
 import store from "./store";
-import Editor from "vue-editor-js/src";
+// import Editor from "vue-editor-js/src";
+import tinymce from 'vue-tinymce-editor'
 Vue.prototype.$store = store;
 Vue.use(VueRouter)
 Vue.use(Vuex)
 Vue.use(VueAxios, axios)
 Vue.use(ViewUI)
-Vue.use(Editor)
+// Vue.use(Editor)
+Vue.component('tinymce',tinymce)
 Vue.mixin(common)
 Vue.mixin(converter)
 //Register Routes
 export const router = new VueRouter({
-    base: process.env.BASE_URL,
     mode: 'history',
     routes,
     store

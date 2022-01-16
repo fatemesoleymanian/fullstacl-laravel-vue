@@ -37,6 +37,7 @@
         "@editorjs/table": "^2.0.1",
         "@heroicons/vue": "^1.0.5",
         "view-design": "^4.7.0",
-        "vue-editor-js": "^2.0.2"
+        "vue-editor-js": "^2.0.2",
+        "vue-tinymce-editor": "^1.6.2"
     }
 }

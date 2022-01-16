@@ -34,7 +34,7 @@
                                 <td> <span  v-for="(t, k) in blog.tag" v-if="blog.tag.length"><Tag color="cyan">{{t.tagName}}</Tag></span> </td>
                                 <td>{{ blog.views}}</td>
                                 <td>
-                                    <Button type="primary" shape="circle" v-if="isReadPermitted" @click="$router.push(`/get_comments/${blog.id}`)" ghost>Blog comments</Button>
+                                    <Button type="primary" shape="circle" v-if="isDeletePermitted" @click="$router.push(`/get_comments/${blog.id}`)" ghost>Blog comments</Button>
                                     <Button type="default" shape="circle" icon="md-trash" @click="showDeleteModal(blog,i)" :loading="blog.isDeleting" v-if="isDeletePermitted"></Button>
                                     <Button type="default" shape="circle" icon="md-create"
                                             @click="$router.push(`/editblog/${blog.id}`)"  v-if="isUpdatePermitted"></Button>

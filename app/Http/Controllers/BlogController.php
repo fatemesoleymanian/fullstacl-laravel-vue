@@ -46,7 +46,6 @@ class BlogController extends Controller
             'post' => 'required',
             'post_excerpt' => 'required',
             'metaDescription' => 'required|max:100',
-            'jsonData' => 'required',
             'category_id' => 'required',
             'tag_id' => 'required',
         ]);
@@ -63,8 +62,7 @@ class BlogController extends Controller
                     'post_excerpt'=>$request->post_excerpt,
                     'user_id'=>Auth::user()->id,
                     'metaDescription'=>$request->metaDescription,
-                    'slug'=>\Str::slug($request->title),
-                    'jsonData'=>$request->jsonData,
+                    'slug'=>\Str::slug($request->title)
                 ]
             );
             foreach ($categories as $c)
@@ -113,7 +111,6 @@ class BlogController extends Controller
             'post' => 'required',
             'post_excerpt' => 'required',
             'metaDescription' => 'required',
-            'jsonData' => 'required',
             'category_id' => 'required',
             'tag_id' => 'required',
         ]);
@@ -130,8 +127,7 @@ class BlogController extends Controller
                 'post' => $request->post,
                 'post_excerpt' => $request->post_excerpt,
                 'user_id' => Auth::user()->id,
-                'metaDescription' => $request->metaDescription,
-                'jsonData' => $request->jsonData,
+                'metaDescription' => $request->metaDescription
             ]);
 
 

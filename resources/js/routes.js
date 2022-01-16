@@ -83,9 +83,6 @@ export const routes = [
         path:'/get_comments/:id',
         component: BlogComments,
         name:'blogcomments',
-        meta:{
-            navLink: '/get_comments'
-        }
     },
     {
         path:'/get_reply/:id',

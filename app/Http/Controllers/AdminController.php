@@ -32,6 +32,7 @@ class AdminController extends Controller
         if ($request->path() == 'login') {
             return redirect('/');
         }
+        if (Auth::check() && $user->role->isAdmin != 0 && $request->path() == '/') return redirect('/home');
 
         return $this->checkForPermission($user,$request);
 
@@ -44,8 +45,13 @@ class AdminController extends Controller
             return view('welcome');
         }
         foreach ($permission as $p) {
+            if($p->name == 'blogs')
+            {
+                if ($p->update) return view('welcome');
+                if ($p->delete) return view('welcome');
+            }
             if ($p->name == $request->path()) {
-                if ($p->read) {
+                if ($p->read ) {
                     $hasPermission = true;
                 }
 
